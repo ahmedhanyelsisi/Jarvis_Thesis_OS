@@ -1,13 +1,29 @@
+# Core AI
 openai
 python-dotenv
-pyyaml
 pydantic
-rich
-langchain
-chromadb
-sentence-transformers
+
+# Configuration
+pyyaml
+
+# Document processing
 pypdf
 python-docx
+
+# AI memory (future)
+chromadb
+sentence-transformers
+
+# Workflow
+langchain
+
+# Visualization
 matplotlib
 networkx
+
+# Terminal interface
+rich
+
+# Testing
+pytest
 

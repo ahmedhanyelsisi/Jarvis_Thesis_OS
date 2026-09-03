@@ -1,0 +1,24 @@
+jarvis:
+  name: "Jarvis Thesis OS"
+  version: "0.1.0"
+  mode: "development"
+
+system:
+  environment: "local"
+
+ai:
+  provider: "openai"
+
+memory:
+  enabled: true
+  database: "chromadb"
+
+agents:
+  writer: true
+  reviewer: true
+  latex: true
+  diagram: true
+
+thesis:
+  external_path: "../My-Thesis"
+
