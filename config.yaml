@@ -1,0 +1,25 @@
+jarvis:
+  name: Jarvis Thesis OS
+  version: 0.1
+
+system:
+  mode: research_assistant
+
+agents:
+
+  writer:
+    enabled: true
+
+  latex:
+    enabled: true
+
+  reviewer:
+    enabled: true
+
+  diagram:
+    enabled: true
+
+
+thesis:
+  path: "../My-Thesis"
+
