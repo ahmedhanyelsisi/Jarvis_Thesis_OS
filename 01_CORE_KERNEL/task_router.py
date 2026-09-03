@@ -1,28 +1,79 @@
-import yaml
-
-
 class TaskRouter:
+
 
     def __init__(self):
 
-        with open("jarvis_config.yaml", "r") as file:
-            self.config = yaml.safe_load(file)
+        self.rules = {
 
 
-    def route(self, task):
+            # Specific research tasks first
 
-        task = task.lower()
+            "literature review": "literature_agent",
 
-        rules = self.config.get("routing", {})
+            "literature": "literature_agent",
 
-        for agent, data in rules.items():
+            "research paper": "literature_agent",
 
-            keywords = data.get("keywords", [])
+            "paper": "literature_agent",
 
-            for keyword in keywords:
 
-                if keyword in task:
-                    return agent
 
-        return "general_agent"
+            # Writing
 
+            "write": "thesis_writer_agent",
+
+            "chapter": "thesis_writer_agent",
+
+
+
+            # LaTeX
+
+            "latex": "latex_agent",
+
+            "equation": "latex_agent",
+
+
+
+            # Citation
+
+            "citation": "citation_agent",
+
+            "reference": "citation_agent",
+
+            "bibliography": "citation_agent",
+
+
+
+            # Diagram
+
+            "diagram": "diagram_agent",
+
+            "figure": "diagram_agent",
+
+            "visual": "diagram_agent",
+
+
+
+            # Review last
+
+            "review": "reviewer_agent",
+
+            "check": "reviewer_agent"
+
+        }
+
+
+
+    def route(self, request):
+
+        request = request.lower()
+
+
+        for keyword, agent in self.rules.items():
+
+            if keyword in request:
+
+                return agent
+
+
+        return "thesis_writer_agent"

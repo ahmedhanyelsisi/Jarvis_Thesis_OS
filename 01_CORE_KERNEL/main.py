@@ -3,21 +3,24 @@ from jarvis import Jarvis
 
 def main():
 
-    print("================================")
-    print(" Jarvis Thesis OS v0.1")
-    print(" Core Kernel Initialized")
-    print("================================")
+    print(
+        "Jarvis Thesis OS v0.3"
+    )
+
+    print(
+        "Multi-Agent Kernel Initialized"
+    )
 
     jarvis = Jarvis()
 
-    request = input("\nUser: ")
 
-    response = jarvis.process_request(request)
+    response = jarvis.process_request(
+        "Create methodology diagram"
+    )
 
-    print("\nJarvis:")
+
     print(response)
 
 
 if __name__ == "__main__":
     main()
-

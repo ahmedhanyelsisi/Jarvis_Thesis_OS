@@ -1,37 +1,96 @@
+import sys
+import os
+
+
+PROJECT_ROOT = os.path.dirname(
+    os.path.dirname(
+        os.path.abspath(__file__)
+    )
+)
+
+
+AI_AGENTS_PATH = os.path.join(
+    PROJECT_ROOT,
+    "02_AI_AGENTS"
+)
+
+
+sys.path.insert(
+    0,
+    AI_AGENTS_PATH
+)
+
+
 from agent_manager import AgentManager
 from task_router import TaskRouter
 
-from sys import path
-path.append("02_AI_AGENTS")
+from thesis_writer_agent.writer_agent import ThesisWriterAgent
+from latex_agent.latex_agent import LatexAgent
+from reviewer_agent.reviewer_agent import ReviewerAgent
+from citation_agent.citation_agent import CitationAgent
+from diagram_agent.diagram_agent import DiagramAgent
 
-from agent_registry import load_agents
 
 
 class Jarvis:
 
+
     def __init__(self):
 
         self.agent_manager = AgentManager()
+
         self.task_router = TaskRouter()
 
         self.register_agents()
 
 
+
     def register_agents(self):
 
-        agents = load_agents()
+        writer_agent = ThesisWriterAgent()
 
-        for agent in agents:
-            self.agent_manager.register_agent(agent)
+        latex_agent = LatexAgent()
+
+        reviewer_agent = ReviewerAgent()
+
+        citation_agent = CitationAgent()
+
+        diagram_agent = DiagramAgent()
 
 
-    def process_request(self, request):
+        self.agent_manager.register_agent(
+            writer_agent
+        )
 
-        agent_name = self.task_router.route(request)
+        self.agent_manager.register_agent(
+            latex_agent
+        )
 
-        response = self.agent_manager.execute_agent(
-            agent_name,
+        self.agent_manager.register_agent(
+            reviewer_agent
+        )
+
+        self.agent_manager.register_agent(
+            citation_agent
+        )
+
+        self.agent_manager.register_agent(
+            diagram_agent
+        )
+
+
+
+    def process_request(
+        self,
+        request
+    ):
+
+        agent_name = self.task_router.route(
             request
         )
 
-        return response
+
+        return self.agent_manager.send_task(
+            agent_name,
+            request
+        )
