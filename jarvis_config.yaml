@@ -22,3 +22,26 @@ agents:
 thesis:
   external_path: "../My-Thesis"
 
+routing:
+
+  literature_agent:
+    keywords:
+      - paper
+      - article
+      - literature
+      - research
+      - study
+
+  latex_agent:
+    keywords:
+      - latex
+      - equation
+      - tex
+      - compile
+
+  reviewer_agent:
+    keywords:
+      - review
+      - improve
+      - check
+      - critique

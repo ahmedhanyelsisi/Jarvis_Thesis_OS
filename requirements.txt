@@ -1,29 +1,19 @@
-# Core AI
-openai
-python-dotenv
-pydantic
-
-# Configuration
-pyyaml
-
-# Document processing
-pypdf
-python-docx
-
-# AI memory (future)
-chromadb
-sentence-transformers
-
-# Workflow
-langchain
-
-# Visualization
-matplotlib
-networkx
-
-# Terminal interface
-rich
-
-# Testing
-pytest
-
+beautifulsoup4==4.15.0
+certifi==2026.7.22
+charset-normalizer==3.5.1
+h5py==3.16.0
+idna==3.19
+numpy==2.5.1
+pandas==3.0.5
+pillow==12.3.0
+pymupdf==1.28.2
+python-dateutil==2.9.0.post0
+PyYAML==6.0.3
+requests==2.34.2
+scipy==1.18.0
+six==1.17.0
+soupsieve==2.9.2
+typing_extensions==4.16.0
+tzdata==2026.3
+urllib3==2.7.0
+websocket-client==1.9.0
