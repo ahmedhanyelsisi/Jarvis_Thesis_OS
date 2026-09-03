@@ -36,7 +36,33 @@ The AI Agent Layer contains specialized agents built on the Base Agent Framework
 
 ### Knowledge System
 
-The Knowledge System provides persistent research context. It is intended to organize papers, notes, extracted findings, project knowledge, researcher preferences, and future long-term research memory.
+The Knowledge System provides persistent, source-aware research context through a local-first storage and retrieval layer. Its canonical Python package is `knowledge_system`; the numbered Stone directory retains documentation, generated data, and backward-compatible imports. It ingests PDF, DOCX, and TXT documents, splits them into overlapping chunks, stores chunk vectors in Chroma, catalogs normalized source metadata in SQLite, and maintains durable topic and paper memory.
+
+The `KnowledgeManager` is the public boundary for this layer. Agents receive it as an optional dependency, so existing execution remains unchanged when no knowledge service is configured. Knowledge-aware agents can call `knowledge.search()` without depending on Chroma, SQLite, or document-loader details.
+
+```text
+Research Document
+      |
+      v
+Ingestion Loader (PDF / DOCX / TXT)
+      |
+      v
+Knowledge Manager
+      |
+Knowledge Transaction Manager
+      +---> SHA-256 duplicate detection
+      +---> Thread-safe SQLite Metadata Store
+      `---> Chunker ---> Local Embedder ---> Chroma Vector Store
+                                  ^
+Agent Query ---> Search Engine ---+
+      |
+      v
+Ranked Research Context + Source Metadata
+```
+
+The transaction manager atomically claims document hashes in SQLite and moves ingestion through `PENDING`, `PROCESSING`, `READY`, and `FAILED`. Only the claim owner writes chunks or completes the transition; concurrent managers receive `PROCESSING`, and failed records can be claimed for retry. It also verifies chunk counts after ingestion, rolls back failed writes, synchronizes deletion, and reconciles orphaned or incomplete records. SQLite uses short-lived per-operation connections so the shared service is safe across agent threads and independent manager instances. The embedding provider, model, version, and dimension are persisted and checked before a Chroma collection is used.
+
+The configured and runtime-default embedding provider is `local-hash`, which is deterministic and fully offline. Sentence Transformers remains available as an opt-in local-model backend. No paid service is required.
 
 ### Document Engine
 
@@ -97,7 +123,18 @@ The following foundational capabilities are complete:
 - Base Agent Framework
 - Agent Registry
 - Literature Agent
+- Thesis Writer Agent
+- LaTeX Agent
+- Citation Agent
+- Reviewer Agent
+- Diagram Agent
+- Multi-agent workflow engine
 - Kernel Testing
+- PDF, DOCX, and TXT ingestion
+- Local Chroma vector retrieval
+- SQLite document metadata catalog
+- Persistent research topic and paper memory
+- Optional knowledge access for agents
 
 These components establish the execution foundation for adding more specialized agents and shared research services without redesigning the kernel.
 
@@ -106,14 +143,14 @@ These components establish the execution foundation for adding more specialized 
 ### Current
 
 - **Literature Agent** — supports literature-focused research tasks through the shared agent framework and kernel execution path.
-
-### Future
-
 - **Thesis Writer Agent** — assists with structured drafting, revision, and chapter-level coherence.
 - **LaTeX Agent** — manages LaTeX authoring, formatting, compilation, and diagnostics.
 - **Citation Agent** — supports citation discovery, validation, formatting, and reference consistency.
 - **Reviewer Agent** — evaluates clarity, rigor, structure, and compliance with research requirements.
 - **Diagram Agent** — creates and refines research diagrams, figures, and visual explanations.
+
+### Future
+
 - **Presentation Agent** — transforms thesis content into clear defense and research presentations.
 
 ## 7. Development Roadmap
@@ -132,7 +169,7 @@ Expand the specialized agent ecosystem and introduce coordinated workflows acros
 
 ### Phase 4: Research Memory
 
-Develop persistent, source-aware research memory for papers, notes, findings, decisions, preferences, and project context.
+Implement persistent, source-aware document retrieval and research memory for papers, topics, notes, findings, decisions, preferences, and project context. The initial document ingestion, vector retrieval, metadata catalog, and topic/paper memory foundation is complete; richer chunking, OCR, and evidence synthesis can build on this layer.
 
 ### Phase 5: Jarvis Interface
 

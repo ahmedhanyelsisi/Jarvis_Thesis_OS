@@ -7,11 +7,16 @@ system:
   environment: "local"
 
 ai:
-  provider: "openai"
+  provider: "local"
 
 memory:
   enabled: true
   database: "chromadb"
+
+knowledge:
+  enabled: true
+  vector_database: "chromadb"
+  embedding_provider: "local-hash"
 
 agents:
   writer: true

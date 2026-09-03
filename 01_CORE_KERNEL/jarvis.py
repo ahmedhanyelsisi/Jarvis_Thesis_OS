@@ -29,13 +29,16 @@ from latex_agent.latex_agent import LatexAgent
 from reviewer_agent.reviewer_agent import ReviewerAgent
 from citation_agent.citation_agent import CitationAgent
 from diagram_agent.diagram_agent import DiagramAgent
+from literature_agent.agent import LiteratureAgent
 
 
 
 class Jarvis:
 
 
-    def __init__(self):
+    def __init__(self, knowledge=None):
+
+        self.knowledge = knowledge
 
         self.agent_manager = AgentManager()
 
@@ -57,6 +60,22 @@ class Jarvis:
 
         diagram_agent = DiagramAgent()
 
+        literature_agent = LiteratureAgent(
+            knowledge=self.knowledge
+        )
+
+
+        for agent in (
+            writer_agent,
+            latex_agent,
+            reviewer_agent,
+            citation_agent,
+            diagram_agent,
+            literature_agent
+        ):
+
+            agent.knowledge = self.knowledge
+
 
         self.agent_manager.register_agent(
             writer_agent
@@ -76,6 +95,10 @@ class Jarvis:
 
         self.agent_manager.register_agent(
             diagram_agent
+        )
+
+        self.agent_manager.register_agent(
+            literature_agent
         )
 
 

@@ -4,10 +4,11 @@ from shared.message_protocol import AgentMessage
 class BaseAgent:
 
 
-    def __init__(self, name, purpose):
+    def __init__(self, name, purpose, knowledge=None):
 
         self.name = name
         self.purpose = purpose
+        self.knowledge = knowledge
 
 
     def describe(self):
@@ -35,4 +36,16 @@ class BaseAgent:
 
         raise NotImplementedError(
             "Agent execution not implemented."
+        )
+
+
+    def search_knowledge(self, query, top_k=5):
+        """Search optional shared research knowledge without coupling agents to storage."""
+
+        if self.knowledge is None:
+            return []
+
+        return self.knowledge.search(
+            query,
+            top_k=top_k
         )
