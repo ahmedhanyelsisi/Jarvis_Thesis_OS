@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+
+# Environment
+.venv/
+.env
+
+# IDE
+.vscode/
+
+# AI Memory
+03_KNOWLEDGE_SYSTEM/memory/*
+03_KNOWLEDGE_SYSTEM/embeddings/*
+
+# Secrets
+*.key
+*.token
+
