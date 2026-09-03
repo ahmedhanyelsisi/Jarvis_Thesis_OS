@@ -1,0 +1,37 @@
+jarvis_agents:
+
+  thesis_writer:
+    role: "Academic writing assistant"
+    purpose: "Generate and improve thesis content"
+    status: planned
+
+  literature_review:
+    role: "Research discovery specialist"
+    purpose: "Analyze papers and build literature reviews"
+    status: planned
+
+  citation_manager:
+    role: "Reference management specialist"
+    purpose: "Manage citations and bibliography"
+    status: planned
+
+  latex_expert:
+    role: "LaTeX engineering specialist"
+    purpose: "Create, debug and optimize LaTeX documents"
+    status: planned
+
+  reviewer:
+    role: "Academic reviewer"
+    purpose: "Check quality, logic and academic standards"
+    status: planned
+
+  diagram_generator:
+    role: "Scientific visualization specialist"
+    purpose: "Generate TikZ diagrams and research figures"
+    status: planned
+
+  presentation_agent:
+    role: "Defense presentation assistant"
+    purpose: "Create thesis defense materials"
+    status: planned
+
