@@ -276,6 +276,24 @@ def bootstrap_system(
         
         registry.register("academic_agent_orchestrator", cohort_orchestrator)
 
+        # 15. Academic Workflow Orchestrator (Stone 18)
+        workflow_orchestrator_path = os.path.join(project_root, "11_WORKFLOW_ORCHESTRATOR")
+        if workflow_orchestrator_path not in sys.path:
+            sys.path.insert(0, workflow_orchestrator_path)
+            
+        from workflow.persistence import WorkflowPersistence
+        from workflow.orchestrator import WorkflowOrchestrator
+        
+        session_root = os.path.join(project_root, "thesis_root") # Actually it's usually inside thesis_root, but project_root is fine for persistence init.
+        workflow_persistence = WorkflowPersistence(project_root)
+        
+        thesis_workflow_orchestrator = WorkflowOrchestrator(
+            event_bus=registry.get("event_bus"),
+            agent_orchestrator=cohort_orchestrator,
+            persistence=workflow_persistence
+        )
+        registry.register("thesis_workflow_orchestrator", thesis_workflow_orchestrator)
+
         # Activate the system
         SystemActivator.activate(registry)
         

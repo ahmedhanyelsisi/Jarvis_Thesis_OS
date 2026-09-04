@@ -1,0 +1,6 @@
+{
+  "dimension": 384,
+  "model": "blake2b-token-bigram",
+  "model_version": "1",
+  "provider": "local-hash"
+}

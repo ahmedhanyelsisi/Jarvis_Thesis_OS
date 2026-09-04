@@ -1,0 +1,75 @@
+{
+  "previous_workflows": [
+    {
+      "workflow_id": "e5a1326e-10e0-4865-a159-d8814f2466a8",
+      "current_task": null,
+      "completed_tasks": [
+        "task-1",
+        "task-2"
+      ],
+      "failed_tasks": [],
+      "outputs": {
+        "task-1": {
+          "status": "completed",
+          "agent": "diagram_agent",
+          "result": {
+            "agent": "diagram_agent",
+            "task": "Create architecture diagram",
+            "response": "Diagram generation workflow activated."
+          }
+        },
+        "task-2": {
+          "status": "completed",
+          "agent": "reviewer_agent",
+          "result": {
+            "agent": "reviewer_agent",
+            "task": "Review diagram consistency\nDependency outputs: {\"task-1\": {\"agent\": \"diagram_agent\", \"result\": {\"agent\": \"diagram_agent\", \"response\": \"Diagram generation workflow activated.\", \"task\": \"Create architecture diagram\"}, \"status\": \"completed\"}}",
+            "response": "Academic review workflow activated."
+          }
+        }
+      },
+      "skipped_tasks": [],
+      "strategy": {
+        "task_type": "diagram_creation",
+        "complexity": "simple",
+        "steps": [
+          "Create architecture diagram",
+          "Review diagram consistency"
+        ],
+        "required_agents": [
+          "diagram_agent",
+          "reviewer_agent"
+        ],
+        "required_capabilities": [
+          "visualization",
+          "review"
+        ]
+      }
+    }
+  ],
+  "successful_strategies": [
+    {
+      "task_type": "diagram_creation",
+      "steps": [
+        "Create architecture diagram",
+        "Review diagram consistency"
+      ],
+      "successful_agents": [
+        "diagram_agent",
+        "reviewer_agent"
+      ]
+    }
+  ],
+  "user_preferences": {},
+  "execution_history": [
+    {
+      "workflow_id": "e5a1326e-10e0-4865-a159-d8814f2466a8",
+      "completed": [
+        "task-1",
+        "task-2"
+      ],
+      "failed": [],
+      "skipped": []
+    }
+  ]
+}

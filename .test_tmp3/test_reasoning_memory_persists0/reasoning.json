@@ -1,0 +1,73 @@
+{
+  "previous_workflows": [
+    {
+      "workflow_id": "persisted-flow",
+      "current_task": null,
+      "completed_tasks": [
+        "task-1",
+        "task-2"
+      ],
+      "failed_tasks": [],
+      "outputs": {
+        "task-1": {
+          "status": "completed",
+          "agent": "diagram_agent",
+          "result": {
+            "response": "Completed detailed output for Create architecture diagram"
+          }
+        },
+        "task-2": {
+          "status": "completed",
+          "agent": "reviewer_agent",
+          "result": {
+            "response": "Completed detailed output for Review diagram consistency\nDependency outputs: {\"task-1\": {\"agent\": \"diagram_agent\", \"result\": {\"response\": \"Completed detailed output for Create architecture diagram\"}, \"status\": \"completed\"}}"
+          }
+        }
+      },
+      "skipped_tasks": [],
+      "strategy": {
+        "task_type": "diagram_creation",
+        "complexity": "simple",
+        "steps": [
+          "Create architecture diagram",
+          "Review diagram consistency"
+        ],
+        "required_agents": [
+          "diagram_agent",
+          "reviewer_agent"
+        ],
+        "required_capabilities": [
+          "visualization",
+          "review"
+        ]
+      }
+    }
+  ],
+  "successful_strategies": [
+    {
+      "task_type": "diagram_creation",
+      "steps": [
+        "Create architecture diagram",
+        "Review diagram consistency"
+      ],
+      "successful_agents": [
+        "diagram_agent",
+        "reviewer_agent"
+      ]
+    }
+  ],
+  "user_preferences": {
+    "output_format": "LaTeX"
+  },
+  "execution_history": [
+    {
+      "workflow_id": "persisted-flow",
+      "completed": [
+        "task-1",
+        "task-2"
+      ],
+      "failed": [],
+      "skipped": []
+    }
+  ]
+}

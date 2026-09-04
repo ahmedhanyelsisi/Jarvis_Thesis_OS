@@ -1,0 +1,1 @@
+Two managers must not both own this research document.
