@@ -15,8 +15,15 @@ __pycache__/
 # AI Memory
 03_KNOWLEDGE_SYSTEM/memory/*
 03_KNOWLEDGE_SYSTEM/embeddings/*
+04_KNOWLEDGE_SYSTEM/data/
+knowledge_system/data/
 
 # Secrets
 *.key
 *.token
+
+# Runtime reasoning history
+.jarvis/
+.test_tmp/
+.pytest_cache/
 

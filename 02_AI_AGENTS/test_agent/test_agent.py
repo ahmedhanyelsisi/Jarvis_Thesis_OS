@@ -3,6 +3,8 @@ from base_agent.agent import BaseAgent
 
 class TestAgent(BaseAgent):
 
+    __test__ = False
+
 
     def __init__(self):
 

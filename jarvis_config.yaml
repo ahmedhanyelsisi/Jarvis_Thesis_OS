@@ -7,11 +7,16 @@ system:
   environment: "local"
 
 ai:
-  provider: "openai"
+  provider: "local"
 
 memory:
   enabled: true
   database: "chromadb"
+
+knowledge:
+  enabled: true
+  vector_database: "chromadb"
+  embedding_provider: "local-hash"
 
 agents:
   writer: true
@@ -45,3 +50,17 @@ routing:
       - improve
       - check
       - critique
+
+reasoning:
+  enabled: true
+  mode: "deterministic"
+  memory_path: ".jarvis/reasoning_memory.json"
+
+planner:
+  enabled: true
+  execution_mode: "sequential"
+
+evaluation:
+  enabled: true
+  quality_threshold: 7
+  max_improvement_iterations: 1

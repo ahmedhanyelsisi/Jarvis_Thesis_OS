@@ -23,3 +23,12 @@ agents:
 thesis:
   path: "../My-Thesis"
 
+reasoning:
+  enabled: true
+  mode: deterministic
+
+planner:
+  enabled: true
+
+evaluation:
+  enabled: true

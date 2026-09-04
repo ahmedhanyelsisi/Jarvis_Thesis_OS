@@ -58,6 +58,17 @@ The Visual Intelligence Engine supports the creation and refinement of diagrams,
 
 The Interface Layer exposes Jarvis Thesis OS to the researcher. It provides the interaction boundary for current command-driven use and future chat, voice, dashboard, and Jarvis-style heads-up display experiences.
 
+### Reasoning and Orchestration Layer (Stone 5)
+
+The additive Reasoning and Orchestration Layer converts complex requests into
+deterministic strategies and dependency-aware task plans. It routes each task to
+an existing registered agent, executes the plan through the Agent Manager,
+records workflow decisions separately from research knowledge, and evaluates
+the resulting output. The legacy single-agent kernel flow remains unchanged.
+
+See [Stone 5 architecture](stone_5_architecture.md) for component contracts,
+workflow state, failure behavior, and extension points.
+
 ## 4. Core Kernel Execution Flow
 
 The Core Kernel transforms a user request into a routed agent task and returns the resulting output through a consistent execution path:
@@ -98,8 +109,15 @@ The following foundational capabilities are complete:
 - Agent Registry
 - Literature Agent
 - Kernel Testing
+- Deterministic Reasoning Engine
+- Dependency-aware Task Planner and Agent Router
+- Workflow Orchestration and failure propagation
+- Reasoning Memory
+- Review and Evaluation Loop
 
-These components establish the execution foundation for adding more specialized agents and shared research services without redesigning the kernel.
+These components establish the execution foundation for adding more specialized
+agents and shared research services without redesigning the kernel. Stone 5 is
+an opt-in layer above the stable Stones 1-4 interfaces.
 
 ## 6. Current and Future Agents
 
