@@ -360,6 +360,42 @@ class Jarvis:
         )
 
 
+    def get_system_status(self):
+        """Return a lightweight status snapshot for interface adapters."""
+
+        memory_status = (
+            "active"
+            if getattr(self.memory_manager, "enabled", False)
+            else "disabled"
+        )
+
+        if self.voice_manager is None:
+
+            voice_status = "disabled"
+
+        elif self.voice_manager.running:
+
+            voice_status = "listening"
+
+        else:
+
+            voice_status = "ready"
+
+        workflow_status = (
+            "ready"
+            if self.reasoning_enabled and self.planner_enabled
+            else "disabled"
+        )
+
+        return {
+            "kernel": "active",
+            "agents": len(self.agent_manager.list_agents()),
+            "memory": memory_status,
+            "voice": voice_status,
+            "workflow": workflow_status,
+        }
+
+
     @staticmethod
     def _add_memory_context(tasks, memories):
         """Attach retrieved memory context to the first planned task."""
