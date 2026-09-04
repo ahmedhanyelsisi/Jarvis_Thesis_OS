@@ -1,6 +1,7 @@
 import sys
 import os
 import json
+import re
 from pathlib import Path
 
 import yaml
@@ -42,6 +43,7 @@ from reasoning import (
     WorkflowOrchestrator,
 )
 from memory import MemoryManager, MemoryType
+from academic_intelligence import AcademicWorkflowRouter
 
 
 
@@ -109,6 +111,10 @@ class Jarvis:
 
         self.task_router = TaskRouter()
 
+        # Stone 9 adapter: academic state is owned by ARIL; Kernel APIs remain
+        # the only boundary used for fallback command handling.
+        self.academic_router = AcademicWorkflowRouter(kernel=self)
+
         self.register_agents()
 
         self.reasoning_engine = ReasoningEngine()
@@ -172,6 +178,8 @@ class Jarvis:
         request
     ):
 
+        request = self.normalize_request(request)
+
         agent_name = self.task_router.route(
             request
         )
@@ -192,6 +200,8 @@ class Jarvis:
 
         The original ``process_request`` single-agent path remains unchanged.
         """
+
+        request = self.normalize_request(request)
 
         if not self.reasoning_enabled:
 
@@ -393,7 +403,21 @@ class Jarvis:
             "memory": memory_status,
             "voice": voice_status,
             "workflow": workflow_status,
+            "academic_intelligence": "ready",
         }
+
+
+    @staticmethod
+    def normalize_request(request):
+        """Normalize an optional wake word at the Kernel boundary.
+
+        ARIL and existing routers receive only the cleaned command. Non-string
+        values are preserved for backwards-compatible downstream validation.
+        """
+        if not isinstance(request, str):
+            return request
+        normalized = " ".join(request.split()).strip()
+        return re.sub(r"^jarvis(?:\s+|$)", "", normalized, count=1, flags=re.IGNORECASE).strip()
 
 
     @staticmethod
