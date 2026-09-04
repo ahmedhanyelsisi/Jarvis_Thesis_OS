@@ -45,6 +45,7 @@ from reasoning import (
 from memory import MemoryManager, MemoryType
 from academic_intelligence import AcademicWorkflowRouter
 from thesis_workspace import ThesisWorkspaceManager
+from academic_copilot import AcademicCopilot
 
 
 
@@ -123,6 +124,13 @@ class Jarvis:
         if not workspace_root.is_absolute():
             workspace_root = Path(PROJECT_ROOT) / workspace_root
         self.thesis_workspace = ThesisWorkspaceManager(workspace_root)
+
+        # Stone 11 adapter: deterministic analysis is composed exclusively
+        # from the Kernel-owned Stone 9 and Stone 10 public facades.
+        self.academic_copilot = AcademicCopilot(
+            self.academic_router,
+            self.thesis_workspace,
+        )
 
         self.register_agents()
 
