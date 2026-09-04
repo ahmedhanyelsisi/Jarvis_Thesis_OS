@@ -66,3 +66,10 @@ evaluation:
   enabled: true
   quality_threshold: 7
   max_improvement_iterations: 1
+
+voice:
+  enabled: true
+  wake_word: Jarvis
+  language: en
+  provider: local
+  speech_rate: normal

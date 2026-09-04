@@ -38,3 +38,10 @@ planner:
 
 evaluation:
   enabled: true
+
+voice:
+  enabled: true
+  wake_word: Jarvis
+  language: en
+  provider: local
+  speech_rate: normal

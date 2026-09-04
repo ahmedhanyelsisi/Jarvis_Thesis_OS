@@ -140,6 +140,21 @@ class Jarvis:
             )
         )
 
+        voice_config = self.config.get("voice", {})
+
+        self.voice_enabled = voice_config.get("enabled", False)
+
+        self.voice_manager = None
+
+        if self.voice_enabled:
+
+            from voice import VoiceManager
+
+            self.voice_manager = VoiceManager(
+                self,
+                config=voice_config
+            )
+
 
 
     def register_agents(self):
@@ -302,11 +317,47 @@ class Jarvis:
     def close(self):
         """Close a knowledge manager created by this Jarvis instance."""
 
+        if self.voice_manager is not None:
+
+            self.voice_manager.shutdown()
+
         self.memory_manager.close()
 
         if self._owns_knowledge and self.knowledge is not None:
 
             self.knowledge.close()
+
+
+    def start_voice(self):
+        """Start the optional Stone 7 voice listener."""
+
+        if self.voice_manager is None:
+
+            return False
+
+        return self.voice_manager.start()
+
+
+    def process_voice_command(
+        self,
+        audio=None,
+        *,
+        workflow=False,
+        evaluate=True
+    ):
+        """Delegate one utterance to the optional Stone 7 adapter."""
+
+        if self.voice_manager is None:
+
+            raise RuntimeError(
+                "Voice interaction is disabled by configuration."
+            )
+
+        return self.voice_manager.process_voice_command(
+            audio,
+            workflow=workflow,
+            evaluate=evaluate
+        )
 
 
     @staticmethod
