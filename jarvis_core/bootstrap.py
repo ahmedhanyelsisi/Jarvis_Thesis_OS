@@ -211,6 +211,25 @@ def bootstrap_system(
         )
         registry.register("intelligence_orchestrator", intelligence_orchestrator)
         
+        # 12. Thesis Session Layer (Stone 15)
+        session_path = os.path.join(project_root, "08_THESIS_SESSION")
+        if session_path not in sys.path:
+            sys.path.insert(0, session_path)
+            
+        from thesis_session import SafeAgentFileAccess, ThesisSessionManager, SystemActivator
+        
+        file_access = SafeAgentFileAccess(thesis_root=project_root)
+        registry.register("file_access", file_access)
+        
+        session_manager = ThesisSessionManager(
+            event_bus=registry.get("event_bus"),
+            thesis_root=project_root
+        )
+        registry.register("session_manager", session_manager)
+        
+        # Activate the system
+        SystemActivator.activate(registry)
+        
     except Exception as e:
         raise BootstrapError(f"Failed to bootstrap JARVIS OS system dependencies: {str(e)}") from e
 

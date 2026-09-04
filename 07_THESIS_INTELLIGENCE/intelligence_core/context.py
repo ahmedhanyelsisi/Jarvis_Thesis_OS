@@ -43,3 +43,9 @@ class AgentContext:
     def send_message(self, target_role: str, payload: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         """Route a message to another agent through the IntelligenceOrchestrator."""
         return self._router(target_role, payload)
+
+    def read_thesis_file(self, relative_path: str) -> str:
+        raise NotImplementedError("File access not wired")
+
+    def write_thesis_file(self, relative_path: str, content: str) -> None:
+        raise NotImplementedError("File access not wired")
