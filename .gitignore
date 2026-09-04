@@ -27,3 +27,8 @@ knowledge_system/data/
 .test_tmp/
 .pytest_cache/
 
+# Runtime persistent memory database
+memory_database.sqlite
+memory_database.sqlite-shm
+memory_database.sqlite-wal
+

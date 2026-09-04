@@ -5,6 +5,12 @@ jarvis:
 system:
   mode: research_assistant
 
+memory:
+  enabled: true
+  database_path: "memory_database.sqlite"
+  max_results: 10
+  importance_threshold: 0.2
+
 agents:
 
   writer:

@@ -41,6 +41,7 @@ from reasoning import (
     TaskPlanner,
     WorkflowOrchestrator,
 )
+from memory import MemoryManager, MemoryType
 
 
 
@@ -50,6 +51,26 @@ class Jarvis:
     def __init__(self, knowledge=None, config=None):
 
         self.config = self._load_runtime_config(config)
+
+        memory_config = self.config.get("memory", {})
+
+        memory_database_path = Path(
+            memory_config.get(
+                "database_path",
+                os.path.join(PROJECT_ROOT, "memory_database.sqlite")
+            )
+        )
+
+        if not memory_database_path.is_absolute():
+
+            memory_database_path = Path(PROJECT_ROOT) / memory_database_path
+
+        self.memory_manager = MemoryManager(
+            database_path=memory_database_path,
+            enabled=memory_config.get("enabled", bool(memory_config)),
+            max_results=memory_config.get("max_results", 10),
+            importance_threshold=memory_config.get("importance_threshold", 0.0),
+        )
 
         knowledge_config = self.config.get("knowledge", {})
 
@@ -169,12 +190,21 @@ class Jarvis:
                 "Task planning is disabled by configuration."
             )
 
+        relevant_memories = self.memory_manager.search_memory(
+            request
+        )
+
         strategy = self.reasoning_engine.analyze(
             request
         )
 
         tasks = self.task_planner.create_plan(
             strategy
+        )
+
+        self._add_memory_context(
+            tasks,
+            relevant_memories
         )
 
         state = self.workflow_orchestrator.execute(
@@ -242,21 +272,90 @@ class Jarvis:
 
             evaluation = evaluation_cycle["evaluations"][-1]
 
+        if (
+            tasks
+            and len(state.completed_tasks) == len(tasks)
+            and not state.failed_tasks
+            and not state.skipped_tasks
+        ):
+
+            self._store_workflow_experience(
+                request,
+                strategy,
+                state,
+                final_response
+            )
+
         return {
             "strategy": strategy.to_dict(),
             "tasks": [task.to_dict() for task in tasks],
             "workflow": state.to_dict(),
             "evaluation": evaluation,
-            "final_response": final_response
+            "final_response": final_response,
+            "memory_context": [
+                memory.to_dict()
+                for memory in relevant_memories
+            ],
         }
 
 
     def close(self):
         """Close a knowledge manager created by this Jarvis instance."""
 
+        self.memory_manager.close()
+
         if self._owns_knowledge and self.knowledge is not None:
 
             self.knowledge.close()
+
+
+    @staticmethod
+    def _add_memory_context(tasks, memories):
+        """Attach retrieved memory context to the first planned task."""
+
+        if not tasks or not memories:
+
+            return
+
+        lines = [
+            f"- [{memory.memory_type}] {memory.content}"
+            for memory in memories
+        ]
+
+        tasks[0].description = (
+            f"Relevant persistent memory:\n{chr(10).join(lines)}\n\n"
+            f"{tasks[0].description}"
+        )
+
+
+    def _store_workflow_experience(
+        self,
+        request,
+        strategy,
+        state,
+        final_response
+    ):
+        """Persist a compact reusable trace of a successful workflow."""
+
+        output_summary = json.dumps(
+            final_response,
+            default=str,
+            sort_keys=True
+        )
+
+        self.memory_manager.store_memory(
+            MemoryType.EXPERIENCE_MEMORY,
+            (
+                f"Successful {strategy.task_type} workflow for request: {request}. "
+                f"Final response: {output_summary[:2000]}"
+            ),
+            metadata={
+                "workflow_id": state.workflow_id,
+                "task_type": strategy.task_type,
+                "completed_tasks": list(state.completed_tasks),
+            },
+            importance_score=0.7,
+        )
 
 
     @staticmethod
