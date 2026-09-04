@@ -10,9 +10,10 @@ class SystemActivator:
         if intelligence_orchestrator:
             intelligence_orchestrator.activate()
             
-        # 2. Inject SafeAgentFileAccess into AgentRuntimeManager for Context prototype
+        # 2. Inject SafeAgentFileAccess and ContextGateway into AgentRuntimeManager for Context prototype
         agent_runtime = registry.get("agent_runtime")
         file_access = registry.get("file_access")
+        context_gateway = registry.get("context_gateway")
         
         if agent_runtime and file_access:
             # We monkey-patch the build_context method to inject file methods
@@ -26,6 +27,13 @@ class SystemActivator:
                 # Monkey-patch the context object with the new safe methods
                 ctx.read_thesis_file = file_access.read_file
                 ctx.write_thesis_file = file_access.write_file
+                
+                # Stone 16 methods
+                if context_gateway:
+                    ctx.search_thesis = context_gateway.search_thesis
+                    ctx.get_document_structure = context_gateway.get_document_structure
+                    ctx.build_context = context_gateway.build_context
+                
                 return ctx
                 
             agent_runtime.build_context = enhanced_build_context

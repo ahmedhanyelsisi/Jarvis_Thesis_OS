@@ -227,6 +227,32 @@ def bootstrap_system(
         )
         registry.register("session_manager", session_manager)
         
+        # 13. Thesis Knowledge Layer (Stone 16)
+        knowledge_path = os.path.join(project_root, "09_THESIS_KNOWLEDGE")
+        if knowledge_path not in sys.path:
+            sys.path.insert(0, knowledge_path)
+            
+        from thesis_knowledge import ThesisIndexer, ContextBuilder, ContextGateway, CopilotBridge
+        
+        indexer = ThesisIndexer(
+            event_bus=registry.get("event_bus"),
+            file_access=file_access,
+            session_id=session_manager.get_session().session_id
+        )
+        registry.register("thesis_indexer", indexer)
+        
+        copilot_bridge = CopilotBridge(academic_copilot=registry.get("academic_copilot"))
+        registry.register("copilot_bridge", copilot_bridge)
+        
+        context_builder = ContextBuilder()
+        
+        context_gateway = ContextGateway(
+            indexer=indexer,
+            bridge=copilot_bridge,
+            builder=context_builder
+        )
+        registry.register("context_gateway", context_gateway)
+
         # Activate the system
         SystemActivator.activate(registry)
         

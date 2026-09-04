@@ -49,3 +49,12 @@ class AgentContext:
 
     def write_thesis_file(self, relative_path: str, content: str) -> None:
         raise NotImplementedError("File access not wired")
+
+    def search_thesis(self, query: str) -> List[Any]:
+        raise NotImplementedError("Thesis knowledge not wired")
+
+    def get_document_structure(self, target: str) -> Any:
+        raise NotImplementedError("Thesis knowledge not wired")
+
+    def build_context(self, goal: str) -> Any:
+        raise NotImplementedError("Thesis knowledge not wired")
