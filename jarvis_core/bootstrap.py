@@ -186,6 +186,31 @@ def bootstrap_system(
         )
         registry.register("build_orchestrator", build_orchestrator)
         
+        # 11. Thesis Intelligence Layer (Stone 14)
+        intelligence_path = os.path.join(project_root, "07_THESIS_INTELLIGENCE")
+        if intelligence_path not in sys.path:
+            sys.path.insert(0, intelligence_path)
+            
+        from intelligence_core import LLMGateway, MemoryGateway, AgentRuntimeManager, IntelligenceOrchestrator
+        
+        llm_gateway = LLMGateway(provider=None)  # stub mode; replace with live provider later
+        memory_gateway = MemoryGateway(knowledge_manager=None)  # wired to KnowledgeManager when available
+        
+        agent_runtime = AgentRuntimeManager(
+            build_orchestrator=registry.get("build_orchestrator"),
+            llm_gateway=llm_gateway,
+            memory_gateway=memory_gateway
+        )
+        registry.register("llm_gateway", llm_gateway)
+        registry.register("memory_gateway", memory_gateway)
+        registry.register("agent_runtime", agent_runtime)
+        
+        intelligence_orchestrator = IntelligenceOrchestrator(
+            event_bus=registry.get("event_bus"),
+            agent_runtime=agent_runtime
+        )
+        registry.register("intelligence_orchestrator", intelligence_orchestrator)
+        
     except Exception as e:
         raise BootstrapError(f"Failed to bootstrap JARVIS OS system dependencies: {str(e)}") from e
 
