@@ -253,6 +253,29 @@ def bootstrap_system(
         )
         registry.register("context_gateway", context_gateway)
 
+        # 14. Academic Agent Cohort (Stone 17)
+        agent_cohort_path = os.path.join(project_root, "10_ACADEMIC_AGENTS")
+        if agent_cohort_path not in sys.path:
+            sys.path.insert(0, agent_cohort_path)
+            
+        from academic_agents.orchestrator import AcademicAgentOrchestrator
+        from academic_agents.planner import PlannerAgent
+        from academic_agents.writer import WriterAgent
+        from academic_agents.reviewer import ReviewerAgent
+        from academic_agents.builder import BuilderAgent
+        
+        cohort_orchestrator = AcademicAgentOrchestrator(
+            event_bus=registry.get("event_bus"),
+            runtime=registry.get("agent_runtime")
+        )
+        
+        cohort_orchestrator.register_agent(PlannerAgent())
+        cohort_orchestrator.register_agent(WriterAgent())
+        cohort_orchestrator.register_agent(ReviewerAgent())
+        cohort_orchestrator.register_agent(BuilderAgent())
+        
+        registry.register("academic_agent_orchestrator", cohort_orchestrator)
+
         # Activate the system
         SystemActivator.activate(registry)
         
