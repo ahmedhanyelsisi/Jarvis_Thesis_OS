@@ -174,6 +174,18 @@ def bootstrap_system(
         from latex_engine import LatexCompiler
         registry.register("latex_compiler", LatexCompiler())
         
+        # 10. Build Orchestration (Stone 13B)
+        build_orchestration_path = os.path.join(project_root, "06_BUILD_ORCHESTRATION")
+        if build_orchestration_path not in sys.path:
+            sys.path.insert(0, build_orchestration_path)
+            
+        from build_orchestration import BuildOrchestrator
+        build_orchestrator = BuildOrchestrator(
+            compiler=registry.get("latex_compiler"),
+            event_bus=registry.get("event_bus")
+        )
+        registry.register("build_orchestrator", build_orchestrator)
+        
     except Exception as e:
         raise BootstrapError(f"Failed to bootstrap JARVIS OS system dependencies: {str(e)}") from e
 
