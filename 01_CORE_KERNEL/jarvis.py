@@ -46,6 +46,7 @@ from memory import MemoryManager, MemoryType
 from academic_intelligence import AcademicWorkflowRouter
 from thesis_workspace import ThesisWorkspaceManager
 from academic_copilot import AcademicCopilot
+from academic_workflow import AcademicWorkflow
 
 
 
@@ -130,6 +131,15 @@ class Jarvis:
         self.academic_copilot = AcademicCopilot(
             self.academic_router,
             self.thesis_workspace,
+        )
+
+        # Stone 12 adapter: workflow state representation composed from
+        # Kernel-owned Stone 9, 10, and 11 facades. Stone 12 owns state
+        # representation only; Kernel owns all execution decisions.
+        self.academic_workflow = AcademicWorkflow(
+            copilot=self.academic_copilot,
+            workspace=self.thesis_workspace,
+            router=self.academic_router,
         )
 
         self.register_agents()
