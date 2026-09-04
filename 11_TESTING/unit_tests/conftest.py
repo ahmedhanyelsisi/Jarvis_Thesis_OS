@@ -12,3 +12,7 @@ def force_garbage_collection_for_windows_locks():
     """
     yield
     gc.collect()
+
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '05_LATEX_ENGINE')))

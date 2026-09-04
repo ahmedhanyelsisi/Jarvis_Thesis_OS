@@ -164,6 +164,16 @@ def bootstrap_system(
             voice_manager = VoiceManager(kernel_proxy, config=voice_config)
         registry.register("voice_manager", voice_manager)
         
+        # 9. Latex Engine (Stone 13A)
+        # Add 05_LATEX_ENGINE to path explicitly
+        import sys
+        latex_engine_path = os.path.join(project_root, "05_LATEX_ENGINE")
+        if latex_engine_path not in sys.path:
+            sys.path.insert(0, latex_engine_path)
+            
+        from latex_engine import LatexCompiler
+        registry.register("latex_compiler", LatexCompiler())
+        
     except Exception as e:
         raise BootstrapError(f"Failed to bootstrap JARVIS OS system dependencies: {str(e)}") from e
 
