@@ -44,6 +44,7 @@ from reasoning import (
 )
 from memory import MemoryManager, MemoryType
 from academic_intelligence import AcademicWorkflowRouter
+from thesis_workspace import ThesisWorkspaceManager
 
 
 
@@ -114,6 +115,14 @@ class Jarvis:
         # Stone 9 adapter: academic state is owned by ARIL; Kernel APIs remain
         # the only boundary used for fallback command handling.
         self.academic_router = AcademicWorkflowRouter(kernel=self)
+
+        # Stone 10 adapter: document intelligence remains isolated behind one
+        # Kernel-owned workspace facade. Existing request APIs are unchanged.
+        workspace_config = self.config.get("thesis_workspace", {})
+        workspace_root = Path(workspace_config.get("root", PROJECT_ROOT))
+        if not workspace_root.is_absolute():
+            workspace_root = Path(PROJECT_ROOT) / workspace_root
+        self.thesis_workspace = ThesisWorkspaceManager(workspace_root)
 
         self.register_agents()
 
