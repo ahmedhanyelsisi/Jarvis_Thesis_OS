@@ -1,4 +1,5 @@
 import os
+import sys
 from pathlib import Path
 import yaml
 from typing import Any, Dict, Optional
@@ -73,6 +74,18 @@ def bootstrap_system(
         registry.register("planner_enabled", planner_config.get("enabled", True))
         registry.register("evaluation_enabled", evaluation_config.get("enabled", True))
         registry.register("max_improvement_iterations", evaluation_config.get("max_improvement_iterations", 1))
+
+        # Core Kernel path (Stone 1 foundation)
+        core_kernel_path = os.path.join(project_root, "01_CORE_KERNEL")
+
+        if core_kernel_path not in sys.path:
+            sys.path.insert(0, core_kernel_path)
+
+        # Legacy AI Agents compatibility path
+        agents_legacy_path = os.path.join(project_root, "02_AI_AGENTS", "legacy")
+
+        if agents_legacy_path not in sys.path:
+            sys.path.insert(0, agents_legacy_path)
         
         from agent_manager import AgentManager
         from task_router import TaskRouter
@@ -166,7 +179,7 @@ def bootstrap_system(
         
         # 9. Latex Engine (Stone 13A)
         # Add 05_LATEX_ENGINE to path explicitly
-        import sys
+        
         latex_engine_path = os.path.join(project_root, "05_LATEX_ENGINE")
         if latex_engine_path not in sys.path:
             sys.path.insert(0, latex_engine_path)
@@ -382,3 +395,11 @@ def bootstrap_system(
         raise BootstrapError(f"Failed to bootstrap JARVIS OS system dependencies: {str(e)}") from e
 
     return registry
+
+# Stone 24 compatibility bridge
+# Runtime entrypoint wrapper
+def boot_system(workspace_root=None):
+    """
+    Compatibility wrapper for JARVIS Runtime.
+    """
+    return bootstrap_system(project_root=workspace_root)

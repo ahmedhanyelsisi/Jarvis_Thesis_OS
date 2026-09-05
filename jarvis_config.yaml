@@ -27,7 +27,23 @@ agents:
   diagram: true
 
 thesis:
-  external_path: "../My-Thesis"
+  enabled: true
+
+  repository_root: "D:/Masters/Thesis_Repo/Thesis_Sisi"
+
+  external_path: "D:/Masters/Thesis_Repo/Thesis_Sisi/Thesis/sisi/Templates"
+
+  latex_root: "D:/Masters/Thesis_Repo/Thesis_Sisi/Thesis/sisi/Templates"
+
+  main_file: "MAIN.tex"
+
+  chapters_path: "Chapters"
+
+  bibliography:
+    - "MAIN.bib"
+    - "BIB_AD.bib"
+
+  build_engine: "miktex"
 
 routing:
 
