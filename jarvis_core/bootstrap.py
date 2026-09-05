@@ -331,6 +331,19 @@ def bootstrap_system(
         )
         registry.register("research_gateway", research_gateway)
 
+        # 18. Thesis Reasoning Layer (Stone 21)
+        reasoning_core_path = os.path.join(project_root, "21_THESIS_REASONING")
+        if reasoning_core_path not in sys.path:
+            sys.path.insert(0, reasoning_core_path)
+            
+        from reasoning_core.gateway import ReasoningGateway
+        
+        reasoning_gateway = ReasoningGateway(
+            research_gateway=research_gateway,
+            context_gateway=registry.get("context_gateway")
+        )
+        registry.register("reasoning_gateway", reasoning_gateway)
+
         # Activate the system
         SystemActivator.activate(registry)
         

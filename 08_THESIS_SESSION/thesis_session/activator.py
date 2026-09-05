@@ -33,6 +33,14 @@ class SystemActivator:
                     ctx.search_thesis = context_gateway.search_thesis
                     ctx.get_document_structure = context_gateway.get_document_structure
                     ctx.build_context = context_gateway.build_context
+                    
+                # Stone 21 methods
+                reasoning_gateway = registry.get("reasoning_gateway")
+                if reasoning_gateway:
+                    ctx.analyze_argument = reasoning_gateway.analyze_argument
+                    ctx.map_evidence = reasoning_gateway.map_evidence
+                    ctx.detect_contradictions = reasoning_gateway.detect_contradictions
+                    ctx.synthesize_reasoning = reasoning_gateway.synthesize_reasoning
                 
                 return ctx
                 
