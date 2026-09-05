@@ -294,6 +294,43 @@ def bootstrap_system(
         )
         registry.register("thesis_workflow_orchestrator", thesis_workflow_orchestrator)
 
+        # 16. Academic Quality Layer (Stone 19)
+        quality_path = os.path.join(project_root, "12_ACADEMIC_QUALITY")
+        if quality_path not in sys.path:
+            sys.path.insert(0, quality_path)
+            
+        from quality_core.history import QualityHistoryManager
+        from quality_core.evaluator import QualityEvaluator
+        from quality_core.gateway import QualityGate
+        
+        quality_history = QualityHistoryManager(workspace_root=project_root)
+        quality_evaluator = QualityEvaluator(
+            runtime=registry.get("agent_runtime"),
+            history_manager=quality_history
+        )
+        quality_gate = QualityGate(
+            evaluator=quality_evaluator,
+            workflow_orchestrator=thesis_workflow_orchestrator
+        )
+        registry.register("quality_history", quality_history)
+        registry.register("quality_evaluator", quality_evaluator)
+        registry.register("quality_gate", quality_gate)
+
+        # 17. Research Intelligence Layer (Stone 20)
+        research_path = os.path.join(project_root, "20_RESEARCH_INTELLIGENCE")
+        if research_path not in sys.path:
+            sys.path.insert(0, research_path)
+            
+        from research_core.gateway import ResearchGateway
+        
+        # Need session_id, getting it from session_manager
+        current_session = session_manager.get_session()
+        research_gateway = ResearchGateway(
+            workspace_root=project_root,
+            session_id=current_session.session_id
+        )
+        registry.register("research_gateway", research_gateway)
+
         # Activate the system
         SystemActivator.activate(registry)
         
