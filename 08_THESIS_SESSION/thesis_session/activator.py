@@ -50,6 +50,13 @@ class SystemActivator:
                     ctx.get_learning_pattern = academic_memory_gateway.get_learning_pattern
                     ctx.get_researcher_profile = academic_memory_gateway.get_researcher_profile
                 
+                # Stone 23 methods
+                thesis_pipeline_manager = registry.get("thesis_pipeline_manager")
+                if thesis_pipeline_manager:
+                    ctx.request_human_approval = thesis_pipeline_manager.request_human_approval
+                    ctx.advance_pipeline_state = thesis_pipeline_manager.advance_state
+                    ctx.get_pipeline_state = thesis_pipeline_manager.get_state
+                
                 return ctx
                 
             agent_runtime.build_context = enhanced_build_context

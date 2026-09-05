@@ -361,6 +361,20 @@ def bootstrap_system(
         event_bus = registry.get("event_bus")
         event_bus.subscribe("workflow_completed", academic_memory_gateway.handle_workflow_event)
 
+        # 20. Thesis Production Pipeline Layer (Stone 23)
+        pipeline_core_path = os.path.join(project_root, "14_THESIS_PIPELINE")
+        if pipeline_core_path not in sys.path:
+            sys.path.insert(0, pipeline_core_path)
+            
+        from pipeline_core.pipeline_manager import PipelineManager
+        
+        thesis_pipeline_manager = PipelineManager(
+            session_id=current_session.session_id,
+            event_bus=registry.get("event_bus"),
+            file_access=registry.get("file_access")
+        )
+        registry.register("thesis_pipeline_manager", thesis_pipeline_manager)
+
         # Activate the system
         SystemActivator.activate(registry)
         
