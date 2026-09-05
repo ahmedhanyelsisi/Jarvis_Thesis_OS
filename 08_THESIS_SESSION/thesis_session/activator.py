@@ -42,6 +42,14 @@ class SystemActivator:
                     ctx.detect_contradictions = reasoning_gateway.detect_contradictions
                     ctx.synthesize_reasoning = reasoning_gateway.synthesize_reasoning
                 
+                # Stone 22 methods
+                academic_memory_gateway = registry.get("academic_memory_gateway")
+                if academic_memory_gateway:
+                    ctx.retrieve_memory = academic_memory_gateway.retrieve_memory
+                    ctx.store_feedback = academic_memory_gateway.store_feedback
+                    ctx.get_learning_pattern = academic_memory_gateway.get_learning_pattern
+                    ctx.get_researcher_profile = academic_memory_gateway.get_researcher_profile
+                
                 return ctx
                 
             agent_runtime.build_context = enhanced_build_context

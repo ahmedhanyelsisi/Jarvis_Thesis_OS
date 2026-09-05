@@ -344,6 +344,23 @@ def bootstrap_system(
         )
         registry.register("reasoning_gateway", reasoning_gateway)
 
+        # 19. Academic Memory Layer (Stone 22)
+        memory_core_path = os.path.join(project_root, "13_ACADEMIC_MEMORY")
+        if memory_core_path not in sys.path:
+            sys.path.insert(0, memory_core_path)
+            
+        from academic_memory.gateway import AcademicMemoryGateway
+        
+        academic_memory_gateway = AcademicMemoryGateway(
+            workspace_root=project_root,
+            session_id=current_session.session_id
+        )
+        registry.register("academic_memory_gateway", academic_memory_gateway)
+        
+        # Subscribe Memory to EventBus
+        event_bus = registry.get("event_bus")
+        event_bus.subscribe("workflow_completed", academic_memory_gateway.handle_workflow_event)
+
         # Activate the system
         SystemActivator.activate(registry)
         
