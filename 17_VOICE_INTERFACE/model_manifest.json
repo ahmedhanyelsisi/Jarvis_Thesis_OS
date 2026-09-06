@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "status": "provisioned_not_hardware_validated",
+  "release_decision": "download-on-first-run-or-user-supplied-verified-assets; no-bundle",
+  "models": {
+    "whisper": {
+      "path": "models/whisper",
+      "revision": "ebe41f70d5b6dfa9166e2c581c45c9c0cfc57b66",
+      "source": "https://huggingface.co/Systran/faster-whisper-base/tree/ebe41f70d5b6dfa9166e2c581c45c9c0cfc57b66",
+      "license": "MIT",
+      "release_decision": "eligible only as a verified download or user-supplied asset",
+      "files": {
+        "config.json": "56a6d8110d311f19c8f0471e562832c7527f146b567275bfca59fcf7c184da9a",
+        "model.bin": "d01c3014881c9c6f3133c182f3d2887eb6ca1c789a7538c5c007196857a0a6a9",
+        "tokenizer.json": "fb7b63191e9bb045082c79fd742a3106a12c99513ab30df4a0d47fa6cb6fd0ab",
+        "vocabulary.txt": "34ce3fe1c5041027b3f8d42912270993f986dbc4bb34cf27f951e34a1e453913"
+      }
+    },
+    "piper": {
+      "path": "models/piper/en_GB-alan-medium.onnx",
+      "revision": "1162a9173d0ce503555aed757976b7a9912eae4c",
+      "source": "https://huggingface.co/rhasspy/piper-voices/tree/1162a9173d0ce503555aed757976b7a9912eae4c",
+      "license": "See bundled MODEL_CARD; engine GPL-3.0",
+      "release_decision": "not bundled pending release-specific license review",
+      "files": {
+        "en_GB-alan-medium.onnx": "0a309668932205e762801f1efc2736cd4b0120329622adf62be09e56339d3330",
+        "en_GB-alan-medium.onnx.json": "c0f0d124e5895c00e7c03b35dcc8287f319a6998a365b182deb5c8e752ee8c1e",
+        "MODEL_CARD": "abcbc3e961124398911436acd9eaaa0ab167cdf221d5a24146aa08732c52630f"
+      }
+    },
+    "wake": {
+      "path": "models/wake/hey_jarvis_v0.1.onnx",
+      "revision": "v0.5.1",
+      "source": "https://github.com/dscripka/openWakeWord/releases/download/v0.5.1/hey_jarvis_v0.1.onnx",
+      "license": "CC-BY-NC-SA-4.0 (upstream pretrained model terms)",
+      "release_decision": "not bundled",
+      "files": {
+        "hey_jarvis_v0.1.onnx": "94a13cfe60075b132f6a472e7e462e8123ee70861bc3fb58434a73712ee0d2cb"
+      }
+    },
+    "melspectrogram": {
+      "path": "models/wake/melspectrogram.onnx",
+      "revision": "v0.5.1",
+      "source": "https://github.com/dscripka/openWakeWord/releases/download/v0.5.1/melspectrogram.onnx",
+      "license": "CC-BY-NC-SA-4.0 (upstream pretrained model terms)",
+      "release_decision": "not bundled",
+      "files": {
+        "melspectrogram.onnx": "ba2b0e0f8b7b875369a2c89cb13360ff53bac436f2895cced9f479fa65eb176f"
+      }
+    },
+    "embedding": {
+      "path": "models/wake/embedding_model.onnx",
+      "revision": "v0.5.1",
+      "source": "https://github.com/dscripka/openWakeWord/releases/download/v0.5.1/embedding_model.onnx",
+      "license": "CC-BY-NC-SA-4.0 (upstream pretrained model terms)",
+      "release_decision": "not bundled",
+      "files": {
+        "embedding_model.onnx": "70d164290c1d095d1d4ee149bc5e00543250a7316b59f31d056cff7bd3075c1f"
+      }
+    }
+  }
+}

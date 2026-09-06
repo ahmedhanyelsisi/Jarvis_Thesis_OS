@@ -1,0 +1,17 @@
+{
+  "language": "en",
+  "input_device": null,
+  "output_device": null,
+  "device_sample_rate": 16000,
+  "wake_threshold": 0.6,
+  "vad_rms": 0.012,
+  "silence_seconds": 0.8,
+  "activation_timeout": 10.0,
+  "max_utterance_seconds": 30.0,
+  "wake_timeout": 60.0,
+  "wake_experimental": false,
+  "model_manifest": "model_manifest.json",
+  "tts_provider": "piper",
+  "speech_rate": 1.0,
+  "cpu_threads": 4
+}

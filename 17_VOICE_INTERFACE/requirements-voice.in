@@ -1,0 +1,8 @@
+# Candidate dependencies; this is NOT a validated, hash-locked environment.
+# Generate requirements-voice.lock only after a clean Windows compatibility run.
+faster-whisper
+piper-tts
+openwakeword
+sounddevice
+numpy
+scipy

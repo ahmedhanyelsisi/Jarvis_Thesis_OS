@@ -4,6 +4,8 @@ class AgentPermissionRegistry:
     def __init__(self):
         # Strict explicit permissions. No inheritance.
         self._registry = {
+            "WorkspaceInspector": {"READ": ["thesis_workspace"], "WRITE": [], "EXECUTE": []},
+            "StatusReader": {"READ": ["capability_status"], "WRITE": [], "EXECUTE": []},
             "ResearchAgent": {
                 "READ": ["papers", "literature"],
                 "WRITE": ["research_notes"],
@@ -30,6 +32,8 @@ class AgentPermissionRegistry:
         """
         Check if an agent has permission to perform an action on a resource.
         """
+        if not all(isinstance(value, str) for value in (agent_name, action_type, resource)):
+            return False
         action_type = action_type.upper()
         
         # Hard block on system-level changes

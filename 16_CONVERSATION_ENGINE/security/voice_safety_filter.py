@@ -1,34 +1,31 @@
+"""Recognition quality never upgrades input provenance or grants authority."""
+import math
 from enum import Enum
-from typing import Dict, Any
+
 
 class InputSource(Enum):
     TEXT = "TEXT"
-    VOICE_CONFIRMED = "VOICE_CONFIRMED"
+    VOICE_CONFIRMED = "VOICE_CONFIRMED"  # legacy label; not authorization
     VOICE_UNCONFIRMED = "VOICE_UNCONFIRMED"
+    AGENT = "AGENT"
+    MEMORY = "MEMORY"
+
 
 class VoiceSafetyFilter:
-    def __init__(self):
-        self.confidence_threshold = 0.85
-        
-    def filter_input(self, text: str, source: InputSource, confidence: float = 1.0, has_wake_word: bool = True) -> Dict[str, Any]:
-        """
-        Prepare interfaces for future voice input. 
-        Background audio cannot authorize actions.
-        """
+    confidence_threshold = 0.85
+
+    def filter_input(self, text, source, confidence=None, has_wake_word=False):
+        if not isinstance(text, str) or not text.strip() or len(text) > 4096:
+            return {"safe": False, "reason": "Invalid or oversized input"}
         if source == InputSource.TEXT:
-            return {"safe": True, "text": text, "source": source}
-            
+            return {"safe": True, "text": text.strip(), "source": source}
+        if source not in (InputSource.VOICE_CONFIRMED, InputSource.VOICE_UNCONFIRMED):
+            return {"safe": False, "reason": "Data-only source cannot issue commands"}
         if not has_wake_word:
-            return {"safe": False, "reason": "Missing wake word"}
-            
+            return {"safe": False, "reason": "Missing activation"}
+        if (isinstance(confidence, bool) or not isinstance(confidence, (int, float))
+                or not math.isfinite(confidence) or not 0 <= confidence <= 1):
+            return {"safe": False, "reason": "Unknown or invalid recognition quality"}
         if confidence < self.confidence_threshold:
-            # Low confidence input could be background speech
-            # Especially dangerous if it's an authorization command
-            dangerous_commands = ["approve all", "enable autonomous mode", "yes", "approve"]
-            if any(cmd in text.lower() for cmd in dangerous_commands):
-                return {"safe": False, "reason": "Low confidence authorization command rejected"}
-            
-            # For non-dangerous commands, maybe it's just unconfirmed
-            return {"safe": True, "text": text, "source": InputSource.VOICE_UNCONFIRMED}
-            
-        return {"safe": True, "text": text, "source": InputSource.VOICE_CONFIRMED}
+            return {"safe": False, "reason": "Uncertain speech; repeat or use text"}
+        return {"safe": True, "text": text.strip(), "source": source}

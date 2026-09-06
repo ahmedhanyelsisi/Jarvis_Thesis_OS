@@ -1,0 +1,12 @@
+# Local runtime assets and machine-specific voice state
+.venv/
+models/
+wheelhouse/
+.state/
+test-results/
+voice_config.local.json
+*.local.json
+
+# Python runtime noise
+__pycache__/
+*.py[cod]
