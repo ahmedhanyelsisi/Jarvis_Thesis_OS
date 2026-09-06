@@ -1,0 +1,18 @@
+# Node / VS Code extension generated files
+extension/node_modules/
+extension/out/
+extension/.vscode-test/
+extension/*.vsix
+
+# Python generated files
+**/__pycache__/
+**/*.py[cod]
+**/.pytest_cache/
+
+# Test / coverage artifacts
+extension/coverage/
+extension/.nyc_output/
+
+# Logs
+*.log
+npm-debug.log*

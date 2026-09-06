@@ -1,0 +1,56 @@
+{
+  "name": "jarvis-thesis-vscode",
+  "displayName": "JARVIS Thesis OS",
+  "description": "JARVIS Thesis OS VS Code client",
+  "version": "0.1.0",
+  "publisher": "jarvis-thesis-os",
+  "engines": {
+    "vscode": "^1.136.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": ["onView:jarvisThesis.health", "onCommand:jarvisThesis.showHealth"],
+  "main": "./out/src/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [{
+        "id": "jarvisThesis",
+        "title": "JARVIS",
+        "icon": "resources/jarvis.svg"
+      }]
+    },
+    "views": {
+      "jarvisThesis": [{
+        "id": "jarvisThesis.health",
+        "name": "JARVIS"
+      }]
+    },
+    "commands": [{
+      "command": "jarvisThesis.showHealth",
+      "title": "JARVIS: Show Health"
+    }],
+    "configuration": {
+      "title": "JARVIS Thesis OS",
+      "properties": {
+        "jarvisThesis.pythonPath": {
+          "type": "string",
+          "default": "python",
+          "description": "Python executable used only to launch the local JARVIS IPC foundation."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p .",
+    "test:unit": "npm run compile && node --test out/test/manifest.test.js",
+    "test:interop": "npm run compile && node --test out/test/interop.test.js",
+    "test": "npm run compile && node out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^24.0.0",
+    "@types/vscode": "^1.136.0",
+    "@vscode/test-electron": "^2.5.2",
+    "mocha": "^11.7.0",
+    "typescript": "^5.9.0"
+  }
+}
