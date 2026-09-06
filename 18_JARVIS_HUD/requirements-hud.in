@@ -1,0 +1,3 @@
+# Stone 27 Gate 2 desktop visual-concept dependencies
+PySide6==6.11.2
+pytest-qt==4.5.0
